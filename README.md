@@ -1,71 +1,99 @@
-# codebase-to-txt README
+# Codebase To Text for VS Code
 
-This is the README for your extension "codebase-to-txt". After writing up a brief description, we recommend including the following sections.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+Quickly consolidate your entire workspace or a specific directory/file into a single text file, formatted for easy use with Large Language Models (LLMs) or other analysis tools.
+
+## Acknowledgement
+
+This extension expands on the work of Project Hierarchy Explorer by Jake Demian
+
+## Motivation
+
+Modern LLMs often have large context windows, allowing you to ask questions about significant amounts of code. However, manually copying and pasting files from your codebase is tedious and error-prone. Tools like Cursor or embedded assistants exist, but sometimes you just want a simple text dump of your relevant code.
+
+This extension provides a straightforward way to generate a single text file containing:
+
+1.  A directory structure overview of the included files.
+2.  The content of each included file, clearly demarcated.
+
+It intelligently ignores files based on `.gitignore` rules and custom VS Code settings.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+*   **Workspace Export:** Generate output for the entire workspace.
+*   **Targeted Export:** Generate output starting from a specific folder or file selected in the Explorer.
+*   **Directory Structure:** Includes a text-based tree view of the included files/folders at the beginning of the output.
+*   **File Content:** Appends the content of each included file, marked with `// File: <path>` headers.
+*   **`.gitignore` Support:** Automatically respects rules found in the `.gitignore` file at the workspace root.
+*   **Custom Ignore Patterns:** Define additional glob patterns in VS Code settings (`codebaseToText.ignorePatterns`) to exclude more files/folders (e.g., `**/__pycache__/**`, `**/*.log`).
+*   **File Size Limit:** Avoids including excessively large files using the `codebaseToText.maxFileSizeMB` setting.
+*   **Basic Binary File Detection:** Attempts to identify and skip likely binary files, replacing their content with a placeholder.
+*   **Simple Output:** Generates the result in a new, untitled plaintext file for easy saving or copying.
 
-For example if there is an image subfolder under your extension project workspace:
+## Installation
 
-\!\[feature X\]\(images/feature-x.png\)
+1.  Open Visual Studio Code.
+2.  Go to the Extensions view (`Ctrl+Shift+X` or `Cmd+Shift+X`).
+3.  Search for "Codebase To Text".
+4.  Click "Install".
+5.  Reload VS Code if prompted.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## Usage
 
-## Requirements
+There are two main ways to use the extension:
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+**1. Generate from Workspace Root:**
 
-## Extension Settings
+*   Open the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P`).
+*   Type `Codebase To Text` and select `Codebase To Text: Generate Output (Workspace)`.
+*   The extension will scan your entire workspace (respecting ignores), generate the structure and content, and open the result in a new untitled tab.
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+**2. Generate from Specific Path (Folder or File):**
 
-For example:
+*   In the VS Code Explorer panel, right-click on the desired folder or file.
+*   Select `Codebase To Text: Generate Output (From Here)` from the context menu.
+*   The extension will process only the selected item (and its children, if it's a folder), respecting ignore rules relative to the workspace root.
+*   The output structure and file paths will be relative to the folder you selected. If you selected a single file, only that file's content will be included (no structure tree).
+*   The result opens in a new untitled tab.
 
-This extension contributes the following settings:
+## Configuration
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+You can customize the extension's behavior via VS Code settings (File > Preferences > Settings or `Ctrl+,`/`Cmd+,`). Search for "codebaseToText".
 
-## Known Issues
+*   **`codebaseToText.ignorePatterns`**:
+    *   An array of glob patterns for files/folders to ignore *in addition* to `.gitignore`.
+    *   Useful for temporary ignores or patterns specific to your local setup.
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+*   **`codebaseToText.outputFileName`**:
+    *   The suggested filename when saving the generated untitled file.
+    *   Default: `"codebase-output.txt"`
 
-## Release Notes
+*   **`codebaseToText.maxFileSizeMB`**:
+    *   The maximum size (in Megabytes) for a single file to be included. Files larger than this will be skipped.
+    *   Default: `5`
 
-Users appreciate release notes as you update your extension.
+## Ignoring Files
 
-### 1.0.0
+The extension uses two sources for ignore patterns, combining them for the final filter:
 
-Initial release of ...
+1.  **`.gitignore`:** Reads the `.gitignore` file located at the **root** of your workspace folder. Standard `.gitignore` syntax applies. Note: Currently, only the root `.gitignore` is considered.
+2.  **VS Code Settings (`codebaseToText.ignorePatterns`):** Reads the array of glob patterns from your User or Workspace settings. This allows for extension-specific ignore rules without modifying your project's `.gitignore`.
 
-### 1.0.1
+Files matching *any* pattern from either source (that isn't negated by a later rule) will be excluded from the output. Skipped files are listed in a summary at the end of the generated output.
 
-Fixed issue #.
+## Known Issues & Limitations
 
-### 1.1.0
+*   **Performance:** Generating output for very large codebases with many files can take time and consume memory.
+*   **Output Size:** The resulting text file can become very large for substantial projects.
+*   **Binary Detection:** The check for binary files is a heuristic (based on non-ASCII character ratio) and may not be 100% accurate.
+*   **`.gitignore` Scope:** Only the `.gitignore` file in the workspace root is currently read. Nested `.gitignore` files are not processed.
+*   **Encoding:** Assumes files are UTF-8 encoded. Errors may occur with other encodings.
 
-Added features X, Y, and Z.
+## Contributing
 
----
+Contributions, issues, and feature requests are welcome! Please feel free to open an issue or submit a pull request on the [GitHub repository](https://github.com/your-username/codebase-to-text). <!-- Replace with your actual repo link -->
 
-## Following extension guidelines
+## License
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+This extension is licensed under the [MIT License](LICENSE). <!-- Make sure you have a LICENSE file -->
