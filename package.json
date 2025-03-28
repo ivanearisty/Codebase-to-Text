@@ -2,21 +2,25 @@
   "name": "codebase-to-txt",
   "displayName": "Codebase To Text",
   "description": "Create a txt file that contains all the code in your codebase (or on specific subdirectories)",
-  "version": "0.0.2",
+  "version": "0.0.3",
+  "publisher": "Ivan Aristy Eusebio",
+  "repository": { 
+    "type": "git",
+    "url": "https://github.com/ivanearisty/Codebase-to-Text.git"
+  },
   "engines": {
     "vscode": "^1.98.0"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+  "onCommand:codebaseToText.generate",
+  "onCommand:codebaseToText.generateFromPath"
+],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
-      {
-        "command": "codebase-to-txt.helloWorld",
-        "title": "Hello World"
-      },
       {
         "command": "codebaseToText.generate",
         "title": "Codebase To Text: Generate Output (Workspace)"
@@ -27,9 +31,9 @@
       }
     ],
     "menus": {
-      "explorer/context": [ 
+      "explorer/context": [
         {
-          "when": "explorerResourceIsFolder || resourceIsFile", 
+          "when": "explorerResourceIsFolder || resourceIsFile",
           "command": "codebaseToText.generateFromPath",
           "group": "navigation@9"
         }
@@ -112,7 +116,8 @@
     "watch": "tsc -watch -p ./",
     "pretest": "pnpm run compile && pnpm run lint",
     "lint": "eslint src",
-    "test": "vscode-test"
+    "test": "vscode-test",
+    "package": "vsce package --no-dependencies"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
@@ -123,7 +128,8 @@
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
     "eslint": "^9.23.0",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "vsce": "^2.15.0"
   },
   "dependencies": {
     "ignore": "^7.0.3"
