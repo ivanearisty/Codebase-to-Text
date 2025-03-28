@@ -1,0 +1,131 @@
+{
+  "name": "codebase-to-txt",
+  "displayName": "Codebase To Text",
+  "description": "Create a txt file that contains all the code in your codebase (or on specific subdirectories)",
+  "version": "0.0.2",
+  "engines": {
+    "vscode": "^1.98.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "codebase-to-txt.helloWorld",
+        "title": "Hello World"
+      },
+      {
+        "command": "codebaseToText.generate",
+        "title": "Codebase To Text: Generate Output (Workspace)"
+      },
+      {
+        "command": "codebaseToText.generateFromPath",
+        "title": "Codebase To Text: Generate Output (From Here)"
+      }
+    ],
+    "menus": {
+      "explorer/context": [ 
+        {
+          "when": "explorerResourceIsFolder || resourceIsFile", 
+          "command": "codebaseToText.generateFromPath",
+          "group": "navigation@9"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Codebase To Text",
+      "properties": {
+        "codebaseToText.ignorePatterns": {
+          "type": "array",
+          "default": [
+            "**/node_modules/**",
+            "**/.git/**",
+            "**/.vscode/**",
+            "**/.DS_Store/**",
+            "**/dist/**",
+            "**/build/**",
+            "**/*.log",
+            "**/*.lock",
+            "**/*.png",
+            "**/*.jpg",
+            "**/*.jpeg",
+            "**/*.gif",
+            "**/*.svg",
+            "**/*.zip",
+            "**/*.tar",
+            "**/*.gz",
+            "**/*.tgz",
+            "**/*.bz2",
+            "**/*.xz",
+            "**/*.7z",
+            "**/*.exe",
+            "**/*.dll",
+            "**/*.so",
+            "**/*.dylib",
+            "**/*.o",
+            "**/*.a",
+            "**/*.class",
+            "**/*.jar",
+            "**/*.war",
+            "**/*.ear",
+            "**/*.apk",
+            "**/*.ipa",
+            "**/*.app",
+            "**/*.msi",
+            "**/*.deb",
+            "**/*.rpm",
+            "**/*.iso",
+            "**/*.img",
+            "**/*.dmg",
+            "**/*.vmdk",
+            "**/*.vdi",
+            "**/*.vhd",
+            "**/*.vhdx",
+            "**/*.qcow2",
+            "**/*.ova",
+            "**/*.ovf"
+          ],
+          "description": "Glob patterns for files/folders to ignore. Also respects .gitignore files.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "codebaseToText.outputFileName": {
+          "type": "string",
+          "default": "codebase-output.txt",
+          "description": "Suggested filename for the generated output file."
+        },
+        "codebaseToText.maxFileSizeMB": {
+          "type": "number",
+          "default": 5,
+          "description": "Maximum size (in MB) for a single file to be included in the output. Helps prevent crashes with huge files."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "pnpm run compile && pnpm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.98.0",
+    "@typescript-eslint/eslint-plugin": "^8.28.0",
+    "@typescript-eslint/parser": "^8.28.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "eslint": "^9.23.0",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "ignore": "^7.0.3"
+  }
+}
