@@ -1,11 +1,22 @@
-.vscode/**
-.vscode-test/**
+# ... (previous ignores) ...
+
+# Build/config files
+build.js
+tsconfig.json
+eslint.config.mjs
+.eslintrc.json
+.prettierrc.json
+.prettierignore
+
+# Source/Test files
 src/**
-.gitignore
-.yarnrc
+test/**
+*.test.ts
+
+# Other dev files
+.vscode-test.mjs
 vsc-extension-quickstart.md
-**/tsconfig.json
-**/eslint.config.mjs
-**/*.map
-**/*.ts
-**/.vscode-test.*
+
+# Ensure output is NOT ignored
+!out/extension.js
+!out/extension.js.map

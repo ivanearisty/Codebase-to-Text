@@ -2,9 +2,9 @@
   "name": "codebase-to-txt",
   "displayName": "Codebase To Text",
   "description": "Create a txt file that contains all the code in your codebase (or on specific subdirectories)",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "publisher": "Ivan Aristy Eusebio",
-  "repository": { 
+  "repository": {
     "type": "git",
     "url": "https://github.com/ivanearisty/Codebase-to-Text.git"
   },
@@ -15,9 +15,9 @@
     "Other"
   ],
   "activationEvents": [
-  "onCommand:codebaseToText.generate",
-  "onCommand:codebaseToText.generateFromPath"
-],
+    "onCommand:codebaseToText.generate",
+    "onCommand:codebaseToText.generateFromPath"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
@@ -111,11 +111,12 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "pnpm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
+    "vscode:prepublish": "pnpm run build",
+    "build": "node ./build.js",
+    "compile": "node ./build.js",
+    "watch": "node ./build.js --watch",
     "pretest": "pnpm run compile && pnpm run lint",
-    "lint": "eslint src",
+    "lint": "eslint src --ext ts",
     "test": "vscode-test",
     "package": "vsce package --no-dependencies"
   },
@@ -127,6 +128,7 @@
     "@typescript-eslint/parser": "^8.28.0",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
+    "esbuild": "^0.25.1",
     "eslint": "^9.23.0",
     "typescript": "^5.8.2",
     "vsce": "^2.15.0"
