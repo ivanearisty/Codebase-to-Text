@@ -33,11 +33,14 @@ It intelligently ignores files based on `.gitignore` rules and custom VS Code se
 
 ## Installation
 
-1.  Open Visual Studio Code.
-2.  Go to the Extensions view (`Ctrl+Shift+X` or `Cmd+Shift+X`).
-3.  Search for "Codebase To Text".
-4.  Click "Install".
-5.  Reload VS Code if prompted.
+1.  Clone this repo
+2.  Run:
+   ```
+   pnpm i
+   pnpm compile
+   pnpm build
+   ```
+3. Install the vsix file into VScode by right clicking it
 
 ## Usage
 
